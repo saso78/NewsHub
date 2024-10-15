@@ -1,11 +1,14 @@
 using NewsHub.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using NewsHub.Data.Repository;
 
-internal class Program
+public class Program
 {
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 
         // Add services to the container.
         builder.Services.AddControllers();
