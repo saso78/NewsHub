@@ -1,0 +1,41 @@
+﻿@using NewsHub.Data.Models
+@using NewsHub.Shared.DTOs
+@using NewsHub.Web.Services
+@using NewsHub.Web.Models
+
+@page "/articles"
+@inject ArticleService ArticleService
+
+<h3>Articles</h3>
+
+@if (articles == null)
+{
+    <p>Loading...</p>
+}
+else if (!articles.Any())
+{
+    <p>No articles found.</p>
+}
+else
+{
+    <ul>
+        @foreach (var article in articles)
+        {
+            <li>
+                <h4>@article.Title</h4>
+                <p>@article.Content</p>
+                <p><strong>Source:</strong> @article.Source</p>
+                <small>Published: @article.PublishedAt.ToString("yyyy-MM-dd HH:mm")</small>
+            </li>
+        }
+    </ul>
+}
+
+@code {
+    private List<ArticleDto> articles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        articles = await ArticleService.GetArticlesAsync();
+    }
+}

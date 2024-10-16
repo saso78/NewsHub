@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NewsHub.Data.Models;
 using NewsHub.Data.Repository;
+using NewsHub.Shared.DTOs;
+
 
 namespace NewsHub.Api.Controllers
 {
@@ -21,6 +23,17 @@ namespace NewsHub.Api.Controllers
         public async Task<ActionResult<IEnumerable<Article>>> GetAll()
         {
             var articles = await _repository.GetAllAsync();
+
+            var articleDtos = articles.Select(a => new ArticleDto
+            {
+                Id = a.Id,
+                Title = a.Title,
+                Content = a.Content,
+                Source = a.Source,
+                PublishedAt = a.PublisedDate
+            }).ToList();
+
+            
             return Ok(articles);
         }
 

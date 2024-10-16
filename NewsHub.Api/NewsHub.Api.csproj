@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NewsHub.Data\NewsHub.Data.csproj" />
+    <ProjectReference Include="..\NewsHub.Shared\NewsHub.Shared.csproj" />
+    <ProjectReference Include="..\NewsHub.Web\NewsHub.Web.csproj" />
   </ItemGroup>
 
 </Project>
