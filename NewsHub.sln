@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NesHub.Tests", "NesHub.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsHub.Web", "NewsHub.Web\NewsHub.Web.csproj", "{52192357-E90F-41CF-BF8A-D15A6A9C6492}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsHub.Shared", "NewsHub.Shared\NewsHub.Shared.csproj", "{0F4773A9-6A3B-4AB5-BF9F-EDCE44A85EEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsHub.Shared", "NewsHub.Shared\NewsHub.Shared.csproj", "{0F4773A9-6A3B-4AB5-BF9F-EDCE44A85EEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

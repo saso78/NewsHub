@@ -3,27 +3,24 @@ using NewsHub.Data.Models;
 using NewsHub.Data.Repository;
 using NewsHub.Shared.DTOs;
 
-
 namespace NewsHub.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    
     public class ArticlesController : ControllerBase
     {
-        private readonly IArticleRepository _repository;
+        private readonly IArticleRepository _articleRepository;
 
-        public ArticlesController(IArticleRepository repository)
+        public ArticlesController(IArticleRepository articleRepository)
         {
-            _repository = repository;
+            _articleRepository = articleRepository;
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<Article>>> GetAll()
+        public async Task<ActionResult<List<ArticleDto>>> GetArticles()
         {
-            var articles = await _repository.GetAllAsync();
-
+            var articles = await _articleRepository.GetAllAsync();
             var articleDtos = articles.Select(a => new ArticleDto
             {
                 Id = a.Id,
@@ -33,47 +30,44 @@ namespace NewsHub.Api.Controllers
                 PublishedAt = a.PublisedDate
             }).ToList();
 
-            
-            return Ok(articles);
+            return Ok(articleDtos);
         }
 
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<Article>> GetById(int id)
+        [HttpPost] 
+        public async Task<IActionResult> AddArticle(ArticleDto articleDto)
         {
-            var article = await _repository.GetByIdAsync(id);
-            if (article == null) return NotFound();
-            return Ok(article);
-        }
+            var article = new Article
+            {
+                Title = articleDto.Title,
+                Content = articleDto.Content,
+                Source = articleDto.Source,
+                PublisedDate = articleDto.PublishedAt
+            };
 
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> Create(Article article)
-        {
-            await _repository.AddAsync(article);
-            return CreatedAtAction(nameof(GetById), new { id = article.Id }, article);
+            await _articleRepository.AddAsync(article);
+            return CreatedAtAction(nameof(GetArticles), new { id = article.Id }, articleDto);
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(int id, Article article)
+        public async Task<IActionResult> UpdateArticle(int id, ArticleDto articleDto)
         {
-            if (id != article.Id) return BadRequest();
-            await _repository.UpdateAsync(article);
+            var article = await _articleRepository.GetByIdAsync(id);
+            if (article == null) return NotFound();
+
+            article.Title = articleDto.Title;
+            article.Content = articleDto.Content;
+            article.Source = articleDto.Source;
+            article.PublisedDate = articleDto.PublishedAt;
+
+            await _articleRepository.UpdateAsync(article);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteArticle(int id)
         {
-            await _repository.DeleteAsync(id);
+            await _articleRepository.DeleteAsync(id);
             return NoContent();
         }
-
     }
 }

@@ -14,9 +14,9 @@ namespace NewsHub.Web
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddScoped<ArticleService>(); // Add ArticleService to DI
-            builder.Services.AddScoped(sp => new HttpClient 
+            builder.Services.AddScoped(sp => new HttpClient
             {
-                BaseAddress = new Uri("https://localhost:7243/swagger/index.html") 
+                BaseAddress = new Uri("https://localhost:7243/")
             });
 
             await builder.Build().RunAsync();

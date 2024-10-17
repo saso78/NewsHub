@@ -1,0 +1,36 @@
+﻿@using NewsHub.Shared.DTOs
+@using NewsHub.Web.Services
+
+@page "/add-article"
+@inject ArticleService ArticleService
+
+<h3>Add Article</h3>
+
+<EditForm Model="article" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Title:</label>
+        <InputText @bind-Value="article.Title" />
+    </div>
+    <div>
+        <label>Content:</label>
+        <InputTextArea @bind-Value="article.Content" />
+    </div>
+    <div>
+        <label>Source:</label>
+        <InputText @bind-Value="article.Source" />
+    </div>
+
+    <button type="submit">Add Article</button>
+</EditForm>
+
+@code {
+    private ArticleDto article = new ArticleDto();
+
+    private async Task HandleValidSubmit()
+    {
+        await ArticleService.AddArticleAsync(article);
+    }
+}
